@@ -6,6 +6,7 @@ const express = require('express');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const exportRoutes = require('./routes/exportRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const adminAuth = require('./middleware/adminAuth');
 const workbookService = require('./services/workbookService');
 
 const app = express();
@@ -18,6 +19,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(adminAuth.attachAdminUser);
 
 app.use((req, res, next) => {
   res.locals.currentPath = req.path;
@@ -40,6 +42,7 @@ app.use((err, req, res, next) => {
       route: (pagePath) => pagePath,
       langSwitch: { en: '/dashboard?lang=en', th: '/dashboard?lang=th' }
     },
+    adminUser: req.adminUser || null,
     error: err,
     appData: (() => {
       try {

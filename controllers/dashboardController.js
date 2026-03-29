@@ -79,6 +79,7 @@ function render(res, view, extra = {}) {
     locale,
     t: translations[locale],
     url,
+    adminUser: res.req.adminUser || null,
     ui: {
       localizeCategory: (value) => localizeCategory(value, locale),
       localizeStatus: (value) => localizeStatus(value, locale),
