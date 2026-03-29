@@ -329,6 +329,118 @@ th {
   line-height: 1.7;
 }
 
+.flash {
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  background: #eef6ff;
+  color: var(--ink);
+}
+
+.flash.error {
+  background: #fff1f1;
+  border-color: #f0c7c7;
+  color: var(--danger);
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.admin-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.dropzone {
+  border: 2px dashed #9eb6cf;
+  border-radius: 18px;
+  padding: 28px;
+  text-align: center;
+  background: linear-gradient(180deg, #f8fbff 0%, #f2f7fc 100%);
+}
+
+.dropzone.dragover {
+  border-color: var(--accent);
+  background: #eaf3fd;
+}
+
+.dropzone input[type="file"] {
+  display: none;
+}
+
+.dropzone strong {
+  display: block;
+  font-size: 1.08rem;
+  margin-bottom: 8px;
+}
+
+.dropzone .hint {
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.form-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.config-grid label,
+.form-stack label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.config-grid textarea {
+  min-height: 84px;
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  font: inherit;
+  resize: vertical;
+}
+
+.meta-list {
+  display: grid;
+  gap: 10px;
+}
+
+.meta-item {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.meta-item span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.84rem;
+  margin-bottom: 4px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.checkbox-row input {
+  width: auto;
+}
+
 .detail-panel {
   min-height: 480px;
 }
@@ -409,5 +521,11 @@ pre {
 
   .toolbar {
     justify-content: flex-start;
+  }
+
+  .admin-grid,
+  .admin-kpis,
+  .config-grid {
+    grid-template-columns: 1fr;
   }
 }

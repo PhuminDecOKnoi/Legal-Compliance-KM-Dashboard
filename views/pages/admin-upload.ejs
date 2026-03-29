@@ -1,0 +1,32 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <% if (flash) { %><div class="flash <%= flash.type === 'error' ? 'error' : '' %>"><%= flash.message %></div><% } %>
+  <section class="admin-grid">
+    <article class="panel">
+      <div class="panel-header">
+        <h2><%= t.adminUpload %></h2>
+      </div>
+      <form class="form-stack" method="post" action="/admin/upload?lang=<%= locale %>" enctype="multipart/form-data">
+        <label class="dropzone" data-dropzone>
+          <strong><%= t.dragDropTitle %></strong>
+          <span class="hint"><%= t.dragDropHint %></span>
+          <span class="button button-secondary"><%= t.chooseFile %></span>
+          <input type="file" name="workbook" accept=".xlsx,.xlsm,.xls" required />
+        </label>
+        <button class="button" type="submit"><%= t.adminPreview %></button>
+      </form>
+    </article>
+    <article class="panel">
+      <div class="panel-header">
+        <h3><%= t.currentWorkbook %></h3>
+      </div>
+      <div class="meta-list">
+        <div class="meta-item"><span><%= t.fileName %></span><strong><%= adminData.appData.meta.sourceFileName %></strong></div>
+        <div class="meta-item"><span><%= t.detectedSheet %></span><strong><%= adminData.appData.meta.rawSheetName %></strong></div>
+        <div class="meta-item"><span><%= t.rowsDetected %></span><strong><%= adminData.appData.meta.recordCount %></strong></div>
+      </div>
+    </article>
+  </section>
+</main>
+<%- include('../partials/footer') %>

@@ -125,6 +125,7 @@ async function main() {
     { currentPath: '/dashboard', view: 'views/pages/dashboard.ejs', pageTitle: 'Dashboard' },
     { currentPath: '/dashboard/executive', view: 'views/pages/executive.ejs', pageTitle: 'Executive View' },
     { currentPath: '/dashboard/employee', view: 'views/pages/employee.ejs', pageTitle: 'Employee View' },
+    { currentPath: '/admin', view: 'views/pages/admin-static.ejs', pageTitle: 'Admin' },
     { currentPath: '/legal-register', view: 'views/pages/legal-register.ejs', pageTitle: 'Legal Register' },
     { currentPath: '/backlog', view: 'views/pages/backlog.ejs', pageTitle: 'Action Backlog' },
     { currentPath: '/category-summary', view: 'views/pages/category-summary.ejs', pageTitle: 'Category Summary' },

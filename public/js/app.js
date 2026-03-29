@@ -172,6 +172,26 @@
     });
   }
 
+  function initUploadDropzone() {
+    const zone = document.querySelector('[data-dropzone]');
+    if (!zone) return;
+    const input = zone.querySelector('input[type="file"]');
+    if (!input) return;
+    zone.addEventListener('click', () => input.click());
+    zone.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      zone.classList.add('dragover');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', (event) => {
+      event.preventDefault();
+      zone.classList.remove('dragover');
+      if (event.dataTransfer.files && event.dataTransfer.files.length) {
+        input.files = event.dataTransfer.files;
+      }
+    });
+  }
+
   function renderRecordDetail(record) {
     const panel = document.getElementById('record-detail');
     if (!panel || !record) return;
@@ -276,4 +296,5 @@
   initRefresh();
   initCharts();
   initRecordTable();
+  initUploadDropzone();
 })();

@@ -5,6 +5,7 @@ const express = require('express');
 
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const exportRoutes = require('./routes/exportRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const workbookService = require('./services/workbookService');
 
 const app = express();
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 
 app.use('/', dashboardRoutes);
 app.use('/', exportRoutes);
+app.use('/', adminRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
@@ -32,8 +34,21 @@ app.use((err, req, res, next) => {
     pageTitle: 'Dashboard Error',
     locale: 'en',
     t: { appTitle: 'Dashboard Error' },
+    url: {
+      staticMode: false,
+      asset: (assetPath) => `/public/${assetPath}`,
+      route: (pagePath) => pagePath,
+      langSwitch: { en: '/dashboard?lang=en', th: '/dashboard?lang=th' }
+    },
     error: err,
-    appData: workbookService.getAppDataSafe()
+    appData: (() => {
+      try {
+        return workbookService.getAppDataSafe();
+      } catch {
+        return { meta: {}, records: [] };
+      }
+    })(),
+    currentPath: req.path
   });
 });
 

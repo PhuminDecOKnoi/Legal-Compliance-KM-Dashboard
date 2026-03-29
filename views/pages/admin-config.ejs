@@ -1,0 +1,44 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <% if (flash) { %><div class="flash <%= flash.type === 'error' ? 'error' : '' %>"><%= flash.message %></div><% } %>
+  <form class="form-stack" method="post" action="/admin/config?lang=<%= locale %>">
+    <input type="hidden" name="lang" value="<%= locale %>" />
+    <section class="panel">
+      <div class="panel-header">
+        <h2><%= t.adminConfig %></h2>
+      </div>
+      <div class="config-grid">
+        <label><%= t.currentWorkbook %><input type="text" name="activeWorkbookPath" value="<%= adminData.configForm.activeWorkbookPath %>" /></label>
+        <label><%= t.uploadsDir %><input type="text" name="uploadsDir" value="<%= adminData.configForm.uploadsDir %>" /></label>
+        <label><%= t.rawSheetName %><input type="text" name="rawSheetName" value="<%= adminData.configForm.rawSheetName %>" /></label>
+        <label><%= t.workbookGuideSheetName %><input type="text" name="workbookGuideSheetName" value="<%= adminData.configForm.workbookGuideSheetName %>" /></label>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-header">
+        <h3><%= t.fieldAliases %></h3>
+      </div>
+      <div class="config-grid">
+        <% Object.entries(adminData.configForm.fieldAliases).forEach(([key, value]) => { %>
+          <label><%= key %><textarea name="fieldAliases.<%= key %>"><%= value %></textarea></label>
+        <% }) %>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-header">
+        <h3><%= t.normalizationRules %></h3>
+      </div>
+      <div class="config-grid">
+        <% Object.entries(adminData.configForm.statusRules).forEach(([key, value]) => { %>
+          <label>Status: <%= key %><textarea name="statusRules.<%= key %>"><%= value %></textarea></label>
+        <% }) %>
+        <% Object.entries(adminData.configForm.validityRules).forEach(([key, value]) => { %>
+          <label>Validity: <%= key %><textarea name="validityRules.<%= key %>"><%= value %></textarea></label>
+        <% }) %>
+      </div>
+      <button class="button" type="submit"><%= t.saveConfig %></button>
+    </section>
+  </form>
+</main>
+<%- include('../partials/footer') %>

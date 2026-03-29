@@ -1,0 +1,63 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <% if (flash) { %><div class="flash <%= flash.type === 'error' ? 'error' : '' %>"><%= flash.message %></div><% } %>
+  <section class="admin-grid">
+    <article class="panel">
+      <div class="panel-header">
+        <h2><%= t.adminConsole %></h2>
+      </div>
+      <div class="admin-kpis">
+        <div class="mini-stat"><span><%= t.currentWorkbook %></span><strong><%= adminData.appData.meta.sourceFileName %></strong></div>
+        <div class="mini-stat"><span><%= t.rowsDetected %></span><strong><%= adminData.appData.meta.recordCount %></strong></div>
+        <div class="mini-stat"><span><%= t.detectedSheet %></span><strong><%= adminData.appData.meta.rawSheetName %></strong></div>
+      </div>
+      <p class="source-note"><%= t.adminStaticNotice %></p>
+      <div class="recommendation-strip">
+        <a class="button" href="<%= url.route('/admin/upload', locale) %>"><%= t.adminUpload %></a>
+        <a class="button button-secondary" href="<%= url.route('/admin/config', locale) %>"><%= t.adminConfig %></a>
+        <a class="button button-secondary" href="<%= url.route('/admin/preview', locale) %>"><%= t.adminPreview %></a>
+      </div>
+    </article>
+    <article class="panel">
+      <div class="panel-header">
+        <h3><%= t.currentWorkbook %></h3>
+      </div>
+      <div class="meta-list">
+        <div class="meta-item"><span><%= t.fileName %></span><strong><%= adminData.activeWorkbookPreview.fileName %></strong></div>
+        <div class="meta-item"><span><%= t.detectedSheet %></span><strong><%= adminData.activeWorkbookPreview.rawSheetName %></strong></div>
+        <div class="meta-item"><span><%= t.rowsDetected %></span><strong><%= adminData.activeWorkbookPreview.rowCount %></strong></div>
+      </div>
+      <form method="post" action="/admin/rebuild-docs?lang=<%= locale %>">
+        <input type="hidden" name="lang" value="<%= locale %>" />
+        <button class="button button-secondary" type="submit"><%= t.adminRebuildDocs %></button>
+      </form>
+    </article>
+  </section>
+  <article class="panel">
+    <div class="panel-header">
+      <h3><%= t.recentUploads %></h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th><%= t.fileName %></th>
+            <th><%= t.lastUpdated %></th>
+            <th><%= t.adminPreview %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% adminData.uploads.forEach((file) => { %>
+            <tr>
+              <td><%= file.fileName %></td>
+              <td><%= new Date(file.modifiedAt).toLocaleString() %></td>
+              <td><a class="button button-secondary" href="/admin/preview?lang=<%= locale %>&file=<%= encodeURIComponent(file.relativePath) %>"><%= t.viewDetails %></a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</main>
+<%- include('../partials/footer') %>

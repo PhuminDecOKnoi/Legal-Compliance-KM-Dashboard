@@ -1,0 +1,70 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <% if (flash) { %><div class="flash <%= flash.type === 'error' ? 'error' : '' %>"><%= flash.message %></div><% } %>
+  <section class="admin-grid">
+    <article class="panel">
+      <div class="panel-header">
+        <h2><%= t.adminPreview %></h2>
+      </div>
+      <div class="meta-list">
+        <div class="meta-item"><span><%= t.fileName %></span><strong><%= preview.fileName %></strong></div>
+        <div class="meta-item"><span><%= t.detectedSheet %></span><strong><%= preview.rawSheetName %></strong></div>
+        <div class="meta-item"><span><%= t.rowsDetected %></span><strong><%= preview.rowCount %></strong></div>
+      </div>
+      <form class="form-stack" method="post" action="/admin/apply?lang=<%= locale %>">
+        <input type="hidden" name="lang" value="<%= locale %>" />
+        <input type="hidden" name="targetFile" value="<%= targetFile %>" />
+        <label class="checkbox-row">
+          <input type="checkbox" name="rebuildDocs" value="1" checked />
+          <span><%= t.rebuildAfterApply %></span>
+        </label>
+        <button class="button" type="submit"><%= t.applyNow %></button>
+      </form>
+    </article>
+    <article class="panel">
+      <div class="panel-header">
+        <h3><%= t.missingFields %></h3>
+      </div>
+      <% if (preview.missingCanonical.length) { %>
+        <ul class="bullet-list">
+          <% preview.missingCanonical.forEach((field) => { %><li><%= field %></li><% }) %>
+        </ul>
+      <% } else { %>
+        <p class="source-note">No missing canonical fields detected.</p>
+      <% } %>
+    </article>
+  </section>
+  <section class="two-col">
+    <article class="panel">
+      <div class="panel-header">
+        <h3><%= t.headerMappingDetected %></h3>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Key</th><th><%= t.sheet %></th></tr></thead>
+          <tbody>
+            <% Object.entries(preview.headerMapping).forEach(([key, value]) => { %>
+              <tr><td><%= key %></td><td><%= value || '-' %></td></tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </article>
+    <article class="panel">
+      <div class="panel-header">
+        <h3><%= t.sampleRows %></h3>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <% preview.sampleRows.forEach((row) => { %>
+              <tr><% row.forEach((cell) => { %><td><%= cell %></td><% }) %></tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+</main>
+<%- include('../partials/footer') %>

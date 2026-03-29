@@ -7,27 +7,80 @@ function slugify(value) {
     .replace(/^-+|-+$/g, '');
 }
 
-function mapRow(headers, row) {
-  return headers.reduce((acc, header, index) => {
-    acc[header] = row[index] ?? '';
-    return acc;
-  }, {});
+function normalizeHeader(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/[()]/g, '')
+    .replace(/[./]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
-function normalizeStatus(statusRaw) {
+function buildHeaderMapping(headers, fieldAliases) {
+  const normalizedHeaders = headers.map((header) => ({
+    original: header,
+    normalized: normalizeHeader(header)
+  }));
+
+  const mapping = {};
+  for (const [key, aliases] of Object.entries(fieldAliases || {})) {
+    const matched = normalizedHeaders.find((header) =>
+      (aliases || []).some((alias) => normalizeHeader(alias) === header.normalized)
+    );
+    mapping[key] = matched ? matched.original : '';
+  }
+  return mapping;
+}
+
+function mapConfiguredRow(headerMapping, row, headers) {
+  const indexByHeader = headers.reduce((acc, header, index) => {
+    acc[header] = index;
+    return acc;
+  }, {});
+
+  const read = (key) => {
+    const header = headerMapping[key];
+    if (!header && header !== '') return '';
+    const index = indexByHeader[header];
+    return index === undefined ? '' : row[index] ?? '';
+  };
+
+  return {
+    subject: read('subject'),
+    no: read('no'),
+    category: read('category'),
+    referenceNo: read('referenceNo'),
+    legalTitle: read('legalTitle'),
+    effectiveDate: read('effectiveDate'),
+    legalReferenceLink: read('legalReferenceLink'),
+    requirements: read('requirements'),
+    implementationStatus: read('implementationStatus'),
+    compliant: read('compliant'),
+    guidanceEvidence: read('guidanceEvidence'),
+    legalValidityStatus: read('legalValidityStatus'),
+    approvalStatus: read('approvalStatus')
+  };
+}
+
+function normalizeStatus(statusRaw, config) {
   const value = String(statusRaw || '').trim().toLowerCase();
   if (!value) return 'Blank';
-  if (value.includes('implement')) return 'Implemented';
-  if (value.includes('review')) return 'Under Review';
-  if (value.includes('evaluat')) return 'Evaluated';
+  for (const [label, terms] of Object.entries((config && config.statusRules) || {})) {
+    if ((terms || []).some((term) => value.includes(String(term).trim().toLowerCase()))) {
+      return label;
+    }
+  }
   return String(statusRaw || '').trim();
 }
 
-function normalizeValidity(validityRaw) {
+function normalizeValidity(validityRaw, config) {
   const value = String(validityRaw || '').trim().toLowerCase();
   if (!value) return 'Unknown';
-  if (value.includes('inactive')) return 'Inactive';
-  if (value.includes('active')) return 'Active';
+  const rules = (config && config.validityRules) || {};
+  if ((rules.Inactive || []).some((term) => value.includes(String(term).trim().toLowerCase()))) return 'Inactive';
+  if ((rules.Active || []).some((term) => value.includes(String(term).trim().toLowerCase()))) return 'Active';
   return String(validityRaw || '').trim();
 }
 
@@ -59,18 +112,17 @@ function deriveBacklogPriority(record) {
   return 'Low';
 }
 
-function normalizeRecord(row, headers, sourceRowNumber) {
-  const mapped = mapRow(headers, row);
-  const issueDateObj = parseWorkbookDate(mapped['Date of Issue / Effective Date']);
-  const statusNorm = normalizeStatus(mapped['Compliance Implementation Status']);
-  const validityNorm = normalizeValidity(mapped['Legal Validity Status']);
-  const compliantNorm = normalizeCompliant(mapped['(Y) Compliant / (N) Non-Compliant']);
+function normalizeRecord(mapped, sourceRowNumber, config) {
+  const issueDateObj = parseWorkbookDate(mapped.effectiveDate);
+  const statusNorm = normalizeStatus(mapped.implementationStatus, config);
+  const validityNorm = normalizeValidity(mapped.legalValidityStatus, config);
+  const compliantNorm = normalizeCompliant(mapped.compliant);
   const currentDate = new Date();
   const dataQualityFlags = [];
 
-  if (!mapped['Date of Issue / Effective Date']) dataQualityFlags.push('Missing date');
-  if (!mapped['Document ID / Reference No.']) dataQualityFlags.push('Missing reference');
-  if (!mapped['Compliance Implementation Status']) dataQualityFlags.push('Blank status');
+  if (!mapped.effectiveDate) dataQualityFlags.push('Missing date');
+  if (!mapped.referenceNo) dataQualityFlags.push('Missing reference');
+  if (!mapped.implementationStatus) dataQualityFlags.push('Blank status');
   if (issueDateObj && issueDateObj > currentDate) dataQualityFlags.push('Future date');
 
   const year = issueDateObj ? String(issueDateObj.getFullYear()) : '';
@@ -79,26 +131,26 @@ function normalizeRecord(row, headers, sourceRowNumber) {
     : '';
 
   const record = {
-    id: `record-${sourceRowNumber}-${slugify(mapped['Legal / Regulatory Title']) || mapped.No || sourceRowNumber}`,
+    id: `record-${sourceRowNumber}-${slugify(mapped.legalTitle) || mapped.no || sourceRowNumber}`,
     sourceRowNumber,
-    subject: mapped.Subject,
-    no: mapped.No,
-    category: mapped.Category,
-    referenceNo: mapped['Document ID / Reference No.'],
-    legalTitle: mapped['Legal / Regulatory Title'],
-    effectiveDateRaw: mapped['Date of Issue / Effective Date'],
+    subject: mapped.subject,
+    no: mapped.no,
+    category: mapped.category,
+    referenceNo: mapped.referenceNo,
+    legalTitle: mapped.legalTitle,
+    effectiveDateRaw: mapped.effectiveDate,
     effectiveDateDisplay: formatDateDisplay(issueDateObj),
     effectiveDateIso: issueDateObj ? issueDateObj.toISOString() : '',
-    legalReferenceLink: mapped['Legal Reference Link'],
-    requirements: mapped['Key Legal & Regulatory Requirements'],
-    implementationStatus: mapped['Compliance Implementation Status'],
+    legalReferenceLink: mapped.legalReferenceLink,
+    requirements: mapped.requirements,
+    implementationStatus: mapped.implementationStatus,
     statusNorm,
-    compliantRaw: mapped['(Y) Compliant / (N) Non-Compliant'],
+    compliantRaw: mapped.compliant,
     compliantNorm,
-    guidanceEvidence: mapped['Implementation Guidance & Evidence Examples'],
-    legalValidityStatus: mapped['Legal Validity Status'],
+    guidanceEvidence: mapped.guidanceEvidence,
+    legalValidityStatus: mapped.legalValidityStatus,
     validityNorm,
-    approvalStatus: mapped['Approval status'] || '',
+    approvalStatus: mapped.approvalStatus || '',
     year,
     yearMonth: month,
     isActive: validityNorm === 'Active',
@@ -114,6 +166,21 @@ function normalizeRecord(row, headers, sourceRowNumber) {
     (record.validityNorm === 'Inactive' ? 'Archive review' : record.isPendingActive ? 'Immediate action' : 'Controlled');
 
   return record;
+}
+
+function parseRawRecords(sheets, config) {
+  const rawSheetName = sheets[config.rawSheetName]
+    ? config.rawSheetName
+    : Object.keys(sheets).find((name) => name.toLowerCase().includes('raw')) || Object.keys(sheets)[0];
+  const rawRows = sheets[rawSheetName] || [];
+  const headers = rawRows[0] || [];
+  const headerMapping = buildHeaderMapping(headers, config.fieldAliases);
+  const records = rawRows
+    .slice(1)
+    .map((row, index) => normalizeRecord(mapConfiguredRow(headerMapping, row, headers), index + 2, config))
+    .filter((record) => record.legalTitle || record.category || record.subject);
+
+  return { records, rawSheetName, headerMapping };
 }
 
 function computeKpis(records) {
@@ -299,12 +366,13 @@ function buildWorkbookMapping(sheets, sheetNames) {
 }
 
 module.exports = {
-  normalizeRecord,
+  parseRawRecords,
   computeKpis,
   computeCategorySummary,
   computeTrendSummary,
   computeBacklog,
   computeDataQuality,
   buildFilterOptions,
-  buildWorkbookMapping
+  buildWorkbookMapping,
+  buildHeaderMapping
 };

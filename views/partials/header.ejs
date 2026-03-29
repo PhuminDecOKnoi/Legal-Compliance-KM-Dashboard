@@ -21,6 +21,7 @@
     <div class="toolbar-group view-toggle">
       <a class="chip <%= currentPath.includes('/executive') || currentPath === '/dashboard' ? 'active' : '' %>" href="<%= url.route('/dashboard/executive', locale) %>"><%= t.executiveView %></a>
       <a class="chip <%= currentPath.includes('/employee') || currentPath === '/legal-register' ? 'active' : '' %>" href="<%= url.route('/dashboard/employee', locale) %>"><%= t.employeeView %></a>
+      <a class="chip <%= currentPath.includes('/admin') ? 'active' : '' %>" href="<%= url.route('/admin', locale) %>"><%= t.admin %></a>
     </div>
     <div class="toolbar-group">
       <% if (!url.staticMode) { %>
@@ -45,4 +46,5 @@
   <a href="<%= url.route('/trend-summary', locale) %>" class="<%= currentPath === '/trend-summary' ? 'active' : '' %>"><%= t.trendSummary %></a>
   <a href="<%= url.route('/data-quality', locale) %>" class="<%= currentPath === '/data-quality' ? 'active' : '' %>"><%= t.dataQuality %></a>
   <a href="<%= url.route('/about-report', locale) %>" class="<%= currentPath === '/about-report' ? 'active' : '' %>"><%= t.aboutReport %></a>
+  <a href="<%= url.route('/admin', locale) %>" class="<%= currentPath.startsWith('/admin') ? 'active' : '' %>"><%= t.admin %></a>
 </nav>

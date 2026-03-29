@@ -1,0 +1,30 @@
+{
+  "activeWorkbookPath": "./TLS8001_Legal_Compliance_Dashboard_March Ver2.0_13032026.xlsx",
+  "uploadsDir": "./data/uploads",
+  "rawSheetName": "Raw_Data_Copy",
+  "workbookGuideSheetName": "Workbook_Guide",
+  "fieldAliases": {
+    "subject": ["Subject"],
+    "no": ["No"],
+    "category": ["Category"],
+    "referenceNo": ["Document ID / Reference No."],
+    "legalTitle": ["Legal / Regulatory Title"],
+    "effectiveDate": ["Date of Issue / Effective Date"],
+    "legalReferenceLink": ["Legal Reference Link"],
+    "requirements": ["Key Legal & Regulatory Requirements"],
+    "implementationStatus": ["Compliance Implementation Status"],
+    "compliant": ["(Y) Compliant / (N) Non-Compliant"],
+    "guidanceEvidence": ["Implementation Guidance & Evidence Examples"],
+    "legalValidityStatus": ["Legal Validity Status"],
+    "approvalStatus": ["Approval status"]
+  },
+  "statusRules": {
+    "Implemented": ["implemented"],
+    "Under Review": ["under review", "review"],
+    "Evaluated": ["evaluated", "evaluate"]
+  },
+  "validityRules": {
+    "Active": ["active"],
+    "Inactive": ["inactive"]
+  }
+}
