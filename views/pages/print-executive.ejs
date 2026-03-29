@@ -1,0 +1,18 @@
+<%- include('../partials/head') %>
+<main class="shell print-shell">
+  <section class="print-title">
+    <h1><%= t.printExecutive %></h1>
+    <p><%= t.appTitle %></p>
+  </section>
+  <%- include('../partials/kpi-cards') %>
+  <article class="panel">
+    <div class="panel-header">
+      <h2><%= t.executiveHighlights %></h2>
+    </div>
+    <p class="lead"><%= insights.narrative %></p>
+  </article>
+  <%- include('../partials/category-table') %>
+  <%- include('../partials/backlog-table') %>
+  <%- include('../partials/data-quality-panel') %>
+</main>
+<%- include('../partials/footer') %>

@@ -1,0 +1,85 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <%- include('../partials/kpi-cards') %>
+  <section class="employee-layout">
+    <section class="panel">
+      <div class="panel-header">
+        <h2><%= t.filters %></h2>
+      </div>
+      <form class="filter-grid" id="record-filters">
+        <input type="search" name="search" placeholder="<%= t.search %>" />
+        <select name="category">
+          <option value=""><%= t.category %></option>
+          <% appData.filterOptions.categories.forEach((item) => { %><option value="<%= item %>"><%= ui.localizeCategory(item) %></option><% }) %>
+        </select>
+        <select name="status">
+          <option value=""><%= t.status %></option>
+          <% appData.filterOptions.statuses.forEach((item) => { %><option value="<%= item %>"><%= ui.localizeStatus(item) %></option><% }) %>
+        </select>
+        <select name="validity">
+          <option value=""><%= t.validity %></option>
+          <% appData.filterOptions.validities.forEach((item) => { %><option value="<%= item %>"><%= ui.localizeValidity(item) %></option><% }) %>
+        </select>
+        <select name="year">
+          <option value=""><%= t.year %></option>
+          <% appData.filterOptions.years.forEach((item) => { %><option value="<%= item %>"><%= item %></option><% }) %>
+        </select>
+        <select name="month">
+          <option value=""><%= t.month %></option>
+          <% appData.filterOptions.months.forEach((item) => { %><option value="<%= item %>"><%= item %></option><% }) %>
+        </select>
+        <button type="reset" class="button button-secondary"><%= t.clearFilters %></button>
+      </form>
+    </section>
+    <section class="register-layout">
+      <article class="panel">
+        <div class="panel-header">
+          <h2><%= t.legalRegister %></h2>
+        </div>
+        <div class="table-wrap">
+          <table id="records-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th><%= t.category %></th>
+                <th><%= t.legalTitle %></th>
+                <th><%= t.effectiveDate %></th>
+                <th><%= t.status %></th>
+                <th><%= t.validity %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% appData.records.forEach((record) => { %>
+                <tr
+                  data-record-id="<%= record.id %>"
+                  data-search="<%= [record.legalTitle, record.category, record.referenceNo, record.requirements].join(' ').toLowerCase() %>"
+                  data-category="<%= record.category %>"
+                  data-status="<%= record.statusNorm %>"
+                  data-validity="<%= record.validityNorm %>"
+                  data-year="<%= record.year %>"
+                  data-month="<%= record.yearMonth %>"
+                >
+                  <td><%= record.no %></td>
+                  <td><%= ui.localizeCategory(record.category) %></td>
+                  <td><button type="button" class="link-button record-trigger"><%= record.legalTitle %></button></td>
+                  <td><%= record.effectiveDateDisplay || '-' %></td>
+                  <td><span class="badge"><%= ui.localizeStatus(record.statusNorm) %></span></td>
+                  <td><span class="badge <%= record.validityNorm === 'Active' ? 'badge-active' : 'badge-muted' %>"><%= ui.localizeValidity(record.validityNorm) %></span></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </article>
+      <article class="panel detail-panel" id="record-detail">
+        <div class="panel-header">
+          <h2><%= t.recordDetails %></h2>
+        </div>
+        <div class="detail-placeholder"><%= t.viewDetails %></div>
+      </article>
+    </section>
+  </section>
+  <%- include('../partials/backlog-table') %>
+</main>
+<%- include('../partials/footer') %>

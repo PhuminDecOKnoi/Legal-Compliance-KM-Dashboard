@@ -1,0 +1,13 @@
+<%- include('./partials/head') %>
+<main class="shell">
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Error</h2>
+    </div>
+    <p><%= error.message %></p>
+    <% if (error.stack) { %>
+      <pre><%= error.stack %></pre>
+    <% } %>
+  </section>
+</main>
+<%- include('./partials/footer') %>

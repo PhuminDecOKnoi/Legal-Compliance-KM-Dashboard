@@ -1,0 +1,44 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <section class="two-col">
+    <article class="panel">
+      <div class="panel-header">
+        <h2><%= t.workbookMapping %></h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th><%= t.sheet %></th>
+              <th><%= t.appModule %></th>
+              <th><%= t.notes %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% viewModel.workbookMapping.forEach((item) => { %>
+              <tr>
+                <td><%= item.sheet %></td>
+                <td><%= item.moduleLocalized %></td>
+                <td><%= item.notesLocalized %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </article>
+    <article class="panel">
+      <div class="panel-header">
+        <h2><%= t.latestSheetContext %></h2>
+      </div>
+      <ul class="bullet-list">
+        <% viewModel.workbookGuideRows.forEach((row) => { %>
+          <% if (row.label) { %>
+            <li><strong><%= row.label %></strong> <%= row.value %></li>
+          <% } %>
+        <% }) %>
+      </ul>
+    </article>
+  </section>
+</main>
+<%- include('../partials/footer') %>

@@ -1,0 +1,27 @@
+{
+  "name": "legal-compliance-dashboard",
+  "version": "1.0.0",
+  "description": "Bilingual internal legal and compliance dashboard powered directly from Excel workbook data.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "express",
+    "dashboard",
+    "compliance",
+    "excel",
+    "legal"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "exceljs": "^4.4.0",
+    "express": "^5.1.0",
+    "pdfkit": "^0.17.2",
+    "xlsx": "^0.18.5"
+  }
+}

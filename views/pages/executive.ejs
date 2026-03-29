@@ -1,0 +1,45 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <%- include('../partials/kpi-cards') %>
+  <section class="dashboard-grid">
+    <article class="panel hero-panel">
+      <div class="panel-header">
+        <h2><%= t.executiveHighlights %></h2>
+      </div>
+      <p class="lead"><%= insights.narrative %></p>
+      <p class="source-note"><%= t.sourceLanguageNote %></p>
+      <div class="highlight-grid">
+        <div class="highlight-card">
+          <span><%= t.topExposureCategory %></span>
+          <strong><%= viewModel.topExposureCategory %></strong>
+        </div>
+        <div class="highlight-card">
+          <span><%= t.activePending %></span>
+          <strong><%= appData.kpis.activePending %></strong>
+        </div>
+        <div class="highlight-card">
+          <span><%= t.dataQualityWatch %></span>
+          <strong><%= appData.dataQuality.totalIssues %></strong>
+        </div>
+      </div>
+    </article>
+    <%- include('../partials/chart-card', { title: t.categorySummary, subtitle: t.byCategoryCount, data: viewModel.categoryPendingChartData, type: 'bar' }) %>
+    <%- include('../partials/chart-card', { title: t.trendSummary, subtitle: t.trendInterpretation, data: viewModel.yearlyTrendChartData, type: 'line' }) %>
+  </section>
+  <section class="two-col">
+    <article class="panel">
+      <div class="panel-header">
+        <h3><%= t.recommendations %></h3>
+      </div>
+      <ul class="bullet-list">
+        <% insights.recommendations.executive.forEach((item) => { %>
+          <li><%= item %></li>
+        <% }) %>
+      </ul>
+    </article>
+    <%- include('../partials/data-quality-panel') %>
+  </section>
+  <%- include('../partials/backlog-table') %>
+</main>
+<%- include('../partials/footer') %>

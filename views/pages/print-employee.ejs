@@ -1,0 +1,40 @@
+<%- include('../partials/head') %>
+<main class="shell print-shell">
+  <section class="print-title">
+    <h1><%= t.printEmployee %></h1>
+    <p><%= t.appTitle %></p>
+  </section>
+  <article class="panel">
+    <div class="panel-header">
+      <h2><%= t.legalRegister %></h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th><%= t.category %></th>
+            <th><%= t.legalTitle %></th>
+            <th><%= t.effectiveDate %></th>
+            <th><%= t.status %></th>
+            <th><%= t.validity %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% appData.records.forEach((record) => { %>
+            <tr>
+              <td><%= record.no %></td>
+              <td><%= record.category %></td>
+              <td><%= record.legalTitle %></td>
+              <td><%= record.effectiveDateDisplay || '-' %></td>
+              <td><%= record.statusNorm %></td>
+              <td><%= record.validityNorm %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+  <%- include('../partials/backlog-table') %>
+</main>
+<%- include('../partials/footer') %>

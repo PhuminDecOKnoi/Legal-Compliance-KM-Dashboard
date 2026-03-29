@@ -1,0 +1,41 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <section class="panel">
+    <div class="panel-header">
+      <h2><%= t.legalRegister %></h2>
+      <p><%= appData.records.length %> records</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th><%= t.subject %></th>
+            <th><%= t.category %></th>
+            <th><%= t.referenceNo %></th>
+            <th><%= t.legalTitle %></th>
+            <th><%= t.effectiveDate %></th>
+            <th><%= t.status %></th>
+            <th><%= t.validity %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% appData.records.forEach((record) => { %>
+            <tr>
+              <td><%= record.no %></td>
+              <td><%= record.subject %></td>
+              <td><%= ui.localizeCategory(record.category) %></td>
+              <td><%= record.referenceNo || '-' %></td>
+              <td><%= record.legalTitle %></td>
+              <td><%= record.effectiveDateDisplay || '-' %></td>
+              <td><%= ui.localizeStatus(record.statusNorm) %></td>
+              <td><%= ui.localizeValidity(record.validityNorm) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

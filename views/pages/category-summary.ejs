@@ -1,0 +1,10 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <section class="dashboard-grid">
+    <%- include('../partials/chart-card', { title: t.categorySummary, subtitle: '', data: appData.categorySummary.map(item => ({ label: item.category, count: item.count })), type: 'bar' }) %>
+    <%- include('../partials/chart-card', { title: t.activePending, subtitle: '', data: appData.categorySummary.map(item => ({ label: item.category, count: item.activePending })), type: 'bar' }) %>
+  </section>
+  <%- include('../partials/category-table') %>
+</main>
+<%- include('../partials/footer') %>

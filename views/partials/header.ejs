@@ -1,0 +1,44 @@
+<header class="app-header">
+  <div class="brand-block">
+    <div>
+      <p class="eyebrow"><%= t.reportingMonth %></p>
+      <h1><%= t.appTitle %></h1>
+    </div>
+    <div class="meta-stack">
+      <span><strong><%= t.reportingMonth %>:</strong> <%= appData.meta.reportingMonth %></span>
+      <span><strong><%= t.sourceFile %>:</strong> <%= appData.meta.sourceFileName %></span>
+      <span><strong><%= t.lastUpdated %>:</strong> <%= new Date(appData.meta.lastUpdatedIso).toLocaleString() %></span>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <label for="lang-switch"><%= t.bilingualMode %></label>
+      <select id="lang-switch" class="lang-switch">
+        <option value="en" <%= locale === 'en' ? 'selected' : '' %>>English</option>
+        <option value="th" <%= locale === 'th' ? 'selected' : '' %>>ไทย</option>
+      </select>
+    </div>
+    <div class="toolbar-group view-toggle">
+      <a class="chip <%= currentPath.includes('/executive') || currentPath === '/dashboard' ? 'active' : '' %>" href="/dashboard/executive?lang=<%= locale %>"><%= t.executiveView %></a>
+      <a class="chip <%= currentPath.includes('/employee') || currentPath === '/legal-register' ? 'active' : '' %>" href="/dashboard/employee?lang=<%= locale %>"><%= t.employeeView %></a>
+    </div>
+    <div class="toolbar-group">
+      <button id="refresh-data" class="button button-secondary"><%= t.refreshData %></button>
+      <a class="button" href="/export/pdf?view=<%= currentPath.includes('/employee') || currentPath.includes('/legal-register') ? 'employee' : 'executive' %>&lang=<%= locale %>"><%= t.exportPdf %></a>
+      <a class="button button-secondary" href="/export/excel?lang=<%= locale %>"><%= t.exportExcel %></a>
+      <a class="button button-secondary" href="<%= currentPath.includes('/employee') || currentPath.includes('/legal-register') ? '/print/employee' : '/print/executive' %>?lang=<%= locale %>" target="_blank" rel="noreferrer"><%= t.printView %></a>
+    </div>
+  </div>
+</header>
+
+<nav class="main-nav">
+  <a href="/dashboard?lang=<%= locale %>" class="<%= currentPath === '/dashboard' ? 'active' : '' %>"><%= t.dashboard %></a>
+  <a href="/dashboard/executive?lang=<%= locale %>" class="<%= currentPath === '/dashboard/executive' ? 'active' : '' %>"><%= t.executiveView %></a>
+  <a href="/dashboard/employee?lang=<%= locale %>" class="<%= currentPath === '/dashboard/employee' ? 'active' : '' %>"><%= t.employeeView %></a>
+  <a href="/legal-register?lang=<%= locale %>" class="<%= currentPath === '/legal-register' ? 'active' : '' %>"><%= t.legalRegister %></a>
+  <a href="/backlog?lang=<%= locale %>" class="<%= currentPath === '/backlog' ? 'active' : '' %>"><%= t.backlog %></a>
+  <a href="/category-summary?lang=<%= locale %>" class="<%= currentPath === '/category-summary' ? 'active' : '' %>"><%= t.categorySummary %></a>
+  <a href="/trend-summary?lang=<%= locale %>" class="<%= currentPath === '/trend-summary' ? 'active' : '' %>"><%= t.trendSummary %></a>
+  <a href="/data-quality?lang=<%= locale %>" class="<%= currentPath === '/data-quality' ? 'active' : '' %>"><%= t.dataQuality %></a>
+  <a href="/about-report?lang=<%= locale %>" class="<%= currentPath === '/about-report' ? 'active' : '' %>"><%= t.aboutReport %></a>
+</nav>

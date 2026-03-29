@@ -1,0 +1,37 @@
+<article class="panel">
+  <div class="panel-header">
+    <h3><%= t.categorySummary %></h3>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><%= t.category %></th>
+          <th><%= t.count %></th>
+          <th><%= t.percent %></th>
+          <th><%= t.active %></th>
+          <th><%= t.implemented %></th>
+          <th><%= t.underReview %></th>
+          <th><%= t.evaluated %></th>
+          <th><%= t.activePending %></th>
+          <th><%= t.notes %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% appData.categorySummary.forEach((item) => { %>
+          <tr>
+            <td><%= ui.localizeCategory(item.category) %></td>
+            <td><%= item.count %></td>
+            <td><%= item.percent %></td>
+            <td><%= item.active %></td>
+            <td><%= item.implemented %></td>
+            <td><%= item.underReview %></td>
+            <td><%= item.evaluated %></td>
+            <td><%= item.activePending %></td>
+            <td><%= ui.localizeNote(item.notes) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</article>

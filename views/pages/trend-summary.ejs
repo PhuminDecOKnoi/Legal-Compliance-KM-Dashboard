@@ -1,0 +1,19 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <%- include('../partials/header') %>
+  <section class="dashboard-grid">
+    <%- include('../partials/chart-card', { title: `${t.trendSummary} - ${t.year}`, subtitle: t.trendInterpretation, data: viewModel.yearlyTrendChartData, type: 'line' }) %>
+    <%- include('../partials/chart-card', { title: `${t.trendSummary} - ${t.month}`, subtitle: t.trendInterpretation, data: viewModel.monthlyTrendChartData, type: 'line' }) %>
+  </section>
+  <article class="panel">
+    <div class="panel-header">
+      <h3><%= t.trendSummary %></h3>
+    </div>
+    <ul class="bullet-list">
+      <% viewModel.trendNotes.forEach((note) => { %>
+        <li><%= note %></li>
+      <% }) %>
+    </ul>
+  </article>
+</main>
+<%- include('../partials/footer') %>

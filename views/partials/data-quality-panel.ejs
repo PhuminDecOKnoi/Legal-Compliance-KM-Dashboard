@@ -1,0 +1,16 @@
+<article class="panel">
+  <div class="panel-header">
+    <h3><%= t.dataQualityWatch %></h3>
+  </div>
+  <div class="quality-grid">
+    <div class="mini-stat"><span><%= t.blankDate %></span><strong><%= appData.dataQuality.blankDate %></strong></div>
+    <div class="mini-stat"><span><%= t.futureDate %></span><strong><%= appData.dataQuality.futureDate %></strong></div>
+    <div class="mini-stat"><span><%= t.missingReference %></span><strong><%= appData.dataQuality.missingReference %></strong></div>
+    <div class="mini-stat"><span><%= t.blankStatus %></span><strong><%= appData.dataQuality.blankStatus %></strong></div>
+  </div>
+  <ul class="warnings">
+    <% viewModel.dataQualityWarnings.forEach((warning) => { %>
+      <li><%= warning %></li>
+    <% }) %>
+  </ul>
+</article>
