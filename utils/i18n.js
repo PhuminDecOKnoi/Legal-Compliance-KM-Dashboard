@@ -100,6 +100,15 @@ const translations = {
     applyNow: 'Apply Now',
     runtimeOnly: 'Runtime Only',
     recentUploads: 'Recent Uploads'
+    ,
+    username: 'Username',
+    password: 'Password',
+    signIn: 'Sign In',
+    signOut: 'Sign Out',
+    adminLogin: 'Admin Login',
+    invalidCredentials: 'Invalid username or password',
+    signedOut: 'Signed out successfully',
+    role: 'Role'
   },
   th: {
     appTitle: 'แดชบอร์ดกฎหมาย / การปฏิบัติตามข้อกำหนด',
@@ -202,6 +211,15 @@ const translations = {
     applyNow: 'นำไปใช้งานทันที',
     runtimeOnly: 'ใช้ได้เฉพาะ runtime',
     recentUploads: 'ไฟล์อัปโหลดล่าสุด'
+    ,
+    username: 'ชื่อผู้ใช้',
+    password: 'รหัสผ่าน',
+    signIn: 'เข้าสู่ระบบ',
+    signOut: 'ออกจากระบบ',
+    adminLogin: 'เข้าสู่ระบบผู้ดูแล',
+    invalidCredentials: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+    signedOut: 'ออกจากระบบเรียบร้อย',
+    role: 'สิทธิ์'
   }
 };
 

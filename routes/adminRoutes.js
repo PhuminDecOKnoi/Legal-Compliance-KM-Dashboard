@@ -5,6 +5,8 @@ const fs = require('fs');
 
 const adminController = require('../controllers/adminController');
 const configService = require('../services/configService');
+const adminAuthController = require('../controllers/adminAuthController');
+const adminAuth = require('../middleware/adminAuth');
 
 const router = express.Router();
 
@@ -27,6 +29,12 @@ const upload = multer({
     cb(null, /\.(xlsx|xlsm|xls)$/i.test(file.originalname));
   }
 });
+
+router.use(adminAuth.attachAdminUser);
+router.get('/admin/login', adminAuthController.loginPage);
+router.post('/admin/login', adminAuthController.login);
+router.post('/admin/logout', adminAuthController.logout);
+router.use('/admin', adminAuth.requireAdminSession);
 
 router.get('/admin', adminController.adminHome);
 router.get('/admin/upload', adminController.adminUploadPage);

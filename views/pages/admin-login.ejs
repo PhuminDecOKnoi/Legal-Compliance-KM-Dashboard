@@ -1,0 +1,28 @@
+<%- include('../partials/head') %>
+<main class="shell">
+  <% if (flash) { %><div class="flash <%= flash.type === 'error' ? 'error' : '' %>"><%= flash.message %></div><% } %>
+  <section class="admin-grid">
+    <article class="panel">
+      <div class="panel-header">
+        <h2><%= t.adminLogin %></h2>
+      </div>
+      <form class="form-stack" method="post" action="/admin/login?lang=<%= locale %>">
+        <input type="hidden" name="lang" value="<%= locale %>" />
+        <label><%= t.username %><input type="text" name="username" autocomplete="username" required /></label>
+        <label><%= t.password %><input type="password" name="password" autocomplete="current-password" required /></label>
+        <button class="button" type="submit"><%= t.signIn %></button>
+      </form>
+    </article>
+    <article class="panel">
+      <div class="panel-header">
+        <h3><%= t.runtimeOnly %></h3>
+      </div>
+      <div class="meta-list">
+        <div class="meta-item"><span><%= t.username %></span><strong>root</strong></div>
+        <div class="meta-item"><span><%= t.role %></span><strong>super_user</strong></div>
+        <div class="meta-item"><span><%= t.currentWorkbook %></span><strong><%= appData.meta.sourceFileName %></strong></div>
+      </div>
+    </article>
+  </section>
+</main>
+<%- include('../partials/footer') %>

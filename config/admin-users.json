@@ -1,0 +1,10 @@
+{
+  "users": [
+    {
+      "username": "root",
+      "password": "1234",
+      "role": "super_user",
+      "displayName": "Root"
+    }
+  ]
+}

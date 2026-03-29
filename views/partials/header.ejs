@@ -29,6 +29,12 @@
         <a class="button" href="/export/pdf?view=<%= currentPath.includes('/employee') || currentPath.includes('/legal-register') ? 'employee' : 'executive' %>&lang=<%= locale %>"><%= t.exportPdf %></a>
         <a class="button button-secondary" href="/export/excel?lang=<%= locale %>"><%= t.exportExcel %></a>
         <a class="button button-secondary" href="<%= currentPath.includes('/employee') || currentPath.includes('/legal-register') ? '/print/employee' : '/print/executive' %>?lang=<%= locale %>" target="_blank" rel="noreferrer"><%= t.printView %></a>
+        <% if (adminUser) { %>
+          <form method="post" action="/admin/logout?lang=<%= locale %>">
+            <input type="hidden" name="lang" value="<%= locale %>" />
+            <button class="button button-secondary" type="submit"><%= t.signOut %></button>
+          </form>
+        <% } %>
       <% } else { %>
         <a class="button button-secondary" href="<%= url.route(currentPath.includes('/employee') || currentPath.includes('/legal-register') ? '/print/employee' : '/print/executive', locale) %>" target="_blank" rel="noreferrer"><%= t.printView %></a>
       <% } %>
