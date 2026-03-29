@@ -21,6 +21,15 @@ const {
 function render(res, view, extra = {}) {
   const locale = resolveLocale(extra.locale);
   const appData = workbookService.getAppDataSafe();
+  const url = {
+    staticMode: false,
+    asset: (assetPath) => `/public/${assetPath}`,
+    route: (pagePath, lang = locale) => `${pagePath}?lang=${lang}`,
+    langSwitch: {
+      en: `${extra.query?.path || extra.currentPath || '/dashboard'}?lang=en`,
+      th: `${extra.query?.path || extra.currentPath || '/dashboard'}?lang=th`
+    }
+  };
   const insights = {
     narrative: buildExecutiveNarrative(appData, locale),
     recommendations: buildRecommendations(appData, locale)
@@ -69,6 +78,7 @@ function render(res, view, extra = {}) {
     pageTitle: extra.pageTitle || 'Legal / Compliance Dashboard',
     locale,
     t: translations[locale],
+    url,
     ui: {
       localizeCategory: (value) => localizeCategory(value, locale),
       localizeStatus: (value) => localizeStatus(value, locale),
@@ -80,7 +90,8 @@ function render(res, view, extra = {}) {
     insights,
     viewModel,
     filters: extra.filters || {},
-    query: extra.query || {}
+    query: extra.query || {},
+    currentPath: extra.currentPath || res.req.path
   });
 }
 
@@ -89,67 +100,78 @@ exports.redirectRoot = (req, res) => res.redirect('/dashboard');
 exports.dashboardHome = (req, res) => render(res, 'pages/dashboard', {
   pageTitle: 'Dashboard',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.executiveView = (req, res) => render(res, 'pages/executive', {
   pageTitle: 'Executive View',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.employeeView = (req, res) => render(res, 'pages/employee', {
   pageTitle: 'Employee View',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.legalRegisterView = (req, res) => render(res, 'pages/legal-register', {
   pageTitle: 'Legal Register',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.backlogView = (req, res) => render(res, 'pages/backlog', {
   pageTitle: 'Action Backlog',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.categorySummaryView = (req, res) => render(res, 'pages/category-summary', {
   pageTitle: 'Category Summary',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.trendSummaryView = (req, res) => render(res, 'pages/trend-summary', {
   pageTitle: 'Trend Summary',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.dataQualityView = (req, res) => render(res, 'pages/data-quality', {
   pageTitle: 'Data Quality',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.aboutReportView = (req, res) => render(res, 'pages/about-report', {
   pageTitle: 'About Report',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.printExecutiveView = (req, res) => render(res, 'pages/print-executive', {
   pageTitle: 'Print Executive',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.printEmployeeView = (req, res) => render(res, 'pages/print-employee', {
   pageTitle: 'Print Employee',
   locale: req.query.lang || 'en',
-  query: req.query
+  query: req.query,
+  currentPath: req.path
 });
 
 exports.refreshData = async (req, res, next) => {
